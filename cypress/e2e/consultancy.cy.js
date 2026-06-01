@@ -76,8 +76,43 @@ describe("Formulário consultoria", () => {
 
     cy.contains("button", "Enviar formulário").click();
 
-    cy.contains(
-      "Sua solicitação de consultoria foi enviada com sucesso! Em breve, nossa equipe entrará em contato através do email fornecido.",
-    ).should("be.visible");
+    cy.get(".modal", { timeout: 6000 })
+      .should("be.visible")
+      .find(".modal-content")
+      .should("be.visible")
+      .should(
+        "have.text",
+        "Sua solicitação de consultoria foi enviada com sucesso! Em breve, nossa equipe entrará em contato através do email fornecido.",
+      );
+  });
+
+  context("Caminho negativo", () => {
+    it("Deve verificar os campos obrigatórios", () => {
+      cy.start();
+      cy.sendLogin("papito@webdojo.com", Cypress.env("senha"));
+      cy.goTo("Formulário", "Consultoria");
+
+      cy.contains("button", "Enviar formulário").click();
+      cy.contains("label", "Nome Completo *")
+        .parent()
+        .find("p")
+        .should("have.text", "Campo obrigatório")
+        .and("be.visible")
+        .and("have.class", "text-red-400")
+        .and("have.css", "color", "rgb(248, 113, 113)");
+
+      cy.contains("label", "Email *")
+        .parent()
+        .find("p")
+        .should("have.text", "Campo obrigatório")
+        .and("be.visible")
+        .and("have.class", "text-red-400")
+        .and("have.css", "color", "rgb(248, 113, 113)");
+
+      cy.contains("p", "Você precisa aceitar os termos de uso")
+        .should("be.visible")
+        .and("have.class", "text-red-400")
+        .and("have.css", "color", "rgb(248, 113, 113)");
+    });
   });
 });
