@@ -9,7 +9,7 @@ describe("Link abrindo novas abas/janela", () => {
       .and("have.attr", "target", "_blank");
   });
 
-  it.only("Acessa link de termos de uso removendo target blank", () => {
+  it("Acessa link de termos de uso removendo target blank", () => {
     cy.start();
     cy.sendLogin("papito@webdojo.com", Cypress.env("senha"));
 
@@ -18,7 +18,7 @@ describe("Link abrindo novas abas/janela", () => {
 
     cy.contains(
       "p",
-      "Ao acessar e usar nossos serviços, você concorda em reunir estes termos de uso. Se você não concordar com algo aspecto desses termos, não utilize nossos serviços.",
+      "Ao acessar e usar nossos serviços, você concorda em cumprir estes termos de uso. Se você não concordar com algum aspecto destes termos, não utilize nossos serviços.",
     ).should("be.visible");
   });
 });
